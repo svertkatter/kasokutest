@@ -9,6 +9,7 @@
 
 <body>
     <h1>加速度センサーデータ</h1>
+    <button id="permissionButton">センサー許可</button>
     <div id="accelerometer">
         <p>X: <span id="accelerationX">0</span></p>
         <p>Y: <span id="accelerationY">0</span></p>
@@ -25,7 +26,6 @@
 
         function requestPermission() {
             if (typeof DeviceMotionEvent.requestPermission === 'function') {
-                // iOS 13+ のデバイスの場合
                 DeviceMotionEvent.requestPermission()
                     .then(permissionState => {
                         if (permissionState === 'granted') {
@@ -36,17 +36,13 @@
                     })
                     .catch(console.error);
             } else {
-                // 非iOS 13+ デバイスの場合、またはrequestPermissionが不要な場合
                 setupDeviceMotion();
             }
         }
 
-        if (window.DeviceMotionEvent) {
+        document.getElementById('permissionButton').addEventListener('click', function () {
             requestPermission();
-        } else {
-            alert("このデバイスはDeviceMotionをサポートしていません。");
-        }
-
+        });
 
     </script>
 </body>
